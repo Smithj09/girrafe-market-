@@ -28,7 +28,7 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
         onClick={onClose}
       >
         <div
-          className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto flex flex-col"
+          className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between p-4 border-b-2 border-pink-200 sticky top-0 bg-white z-10">
@@ -42,13 +42,13 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
           </div>
 
           <div className="overflow-y-auto flex-grow">
-            <div className="flex flex-col md:grid md:grid-cols-2 gap-6 p-6">
+            <div className="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6">
               <div className="space-y-3">
                 <div className="relative">
                   <img
                     src={product.image_url}
                     alt={product.name}
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-48 md:h-64 object-cover rounded-lg"
                   />
                   {product.stock < 10 && product.stock > 0 && (
                     <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
@@ -75,7 +75,7 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
                   </button>
                 </div>
                 
-                <h3 className="text-xl font-bold text-pink-900 mb-2">
+                <h3 className="text-lg md:text-xl font-bold text-pink-900 mb-2">
                   {product.name}
                 </h3>
                 
@@ -89,7 +89,7 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
                   <span className="text-xs text-pink-500">({reviewCount} avis)</span>
                     </div>
                     
-                    <p className="text-pink-600 text-sm leading-relaxed mb-4">
+                    <p className="text-pink-600 text-xs md:text-sm leading-relaxed mb-2 md:mb-4">
                       {product.description}
                     </p>
 
@@ -102,7 +102,7 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
 
                     <div className="border-t-2 border-pink-200 pt-4 mt-auto">
                       <div className="flex items-baseline gap-2 mb-4">
-                        <span className="text-2xl font-bold text-black">
+                        <span className="text-xl md:text-2xl font-bold text-black">
                           ${product.price.toFixed(2)}
                         </span>
                         <span className="text-xs text-pink-500 line-through">
@@ -116,17 +116,17 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock === 0}
-                    className="w-full btn-primary py-3 text-base flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="w-full btn-primary py-2 md:py-3 text-sm md:text-base flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     {product.stock === 0 ? 'Épuisé' : 'Ajouter au panier'}
                   </button>
                   
-                  <div className="mt-3 grid grid-cols-2 gap-3">
-                    <button className="btn-secondary py-2 text-sm">
+                  <div className="mt-2 md:mt-3 grid grid-cols-2 gap-2 md:gap-3">
+                    <button className="btn-secondary py-1.5 md:py-2 text-xs md:text-sm">
                       Acheter Maintenant
                     </button>
-                    <button className="flex items-center justify-center gap-1.5 border-2 border-pink-200 rounded-lg px-3 py-2 text-sm hover:bg-pink-50 transition-colors">
+                    <button className="flex items-center justify-center gap-1.5 border-2 border-pink-200 rounded-lg px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm hover:bg-pink-50 transition-colors">
                         <Heart className="w-4 h-4 text-pink-700" />
                         Liste de souhaits
                       </button>
