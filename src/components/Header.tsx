@@ -42,22 +42,32 @@ export function Header({ onCartClick }: HeaderProps) {
             </div>
 
             <div className="hidden md:flex items-center gap-6">
-              <nav className="flex gap-6">
-                <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Home</a>
-                <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Categories</a>
-                <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Deals</a>
-                <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Contact</a>
-              </nav>
+                <nav className="flex gap-6">
+                  <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Home</a>
+                  <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Categories</a>
+                  <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Deals</a>
+                  <a href="#" className="text-pink-700 hover:text-pink-900 font-medium transition-colors">Contact</a>
+                </nav>
+                
+                <div className="relative flex-grow max-w-md">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    className="w-full pl-10 pr-4 py-2 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
+                  />
+                  <Search className="w-5 h-5 text-pink-400 absolute left-3 top-2.5" />
+                </div>
+              </div>
               
-              <div className="relative">
+              {/* Mobile Search - Hidden on desktop */}
+              <div className="md:hidden relative flex-grow mx-4">
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="pl-10 pr-4 py-2 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none w-64"
+                  className="w-full pl-10 pr-4 py-2 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none text-sm"
                 />
-                <Search className="w-5 h-5 text-pink-400 absolute left-3 top-2.5" />
+                <Search className="w-4 h-4 text-pink-400 absolute left-3 top-2.5" />
               </div>
-            </div>
 
             <div className="flex items-center gap-4">
               {isAuthenticated ? (

@@ -19,12 +19,12 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
         onClick={onClose}
       />
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-black">
+        <div className="flex items-center justify-between p-6 border-b-2 border-pink-200">
           <div className="flex items-center gap-2">
-            <div className="bg-gradient-to-r from-pink-600 to-pink-800 p-2 rounded-lg">
+            <div className="bg-gradient-to-r from-pink-500 to-pink-700 p-2 rounded-lg">
               <ShoppingBag className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-black">
+            <h2 className="text-2xl font-bold text-pink-800">
               DorMakSmellsgood Cart ({cartCount})
             </h2>
           </div>
@@ -32,7 +32,7 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
             onClick={onClose}
             className="p-2 hover:bg-pink-100 rounded-full transition-colors"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6 text-pink-700" />
           </button>
         </div>
 
@@ -40,14 +40,14 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <Loader2 className="w-10 h-10 animate-spin text-pink-600 mb-4" />
-              <p className="text-black">Loading your cart...</p>
+              <p className="text-pink-800">Loading your cart...</p>
             </div>
           ) : cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <div className="bg-pink-100 p-6 rounded-full mb-6">
                 <ShoppingBag className="w-16 h-16 text-pink-400" />
               </div>
-              <p className="text-black text-xl font-medium mb-2">Your cart is empty</p>
+              <p className="text-pink-800 text-xl font-medium mb-2">Your cart is empty</p>
               <p className="text-pink-600 mb-6">Add some products to get started!</p>
               <button
                 onClick={onClose}
@@ -61,7 +61,7 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex gap-4 bg-white p-4 rounded-xl border border-black shadow-sm"
+                  className="flex gap-4 bg-white p-4 rounded-xl border-2 border-pink-200 shadow-sm"
                 >
                   <img
                     src={item.product.image_url}
@@ -69,7 +69,7 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
                     className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-black truncate">
+                    <h3 className="font-semibold text-pink-900 truncate">
                       {item.product.name}
                     </h3>
                     <p className="text-sm text-pink-600 mt-1">
@@ -78,19 +78,19 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
                     <div className="flex items-center gap-3 mt-3">
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                        className="p-1.5 hover:bg-pink-100 rounded-full transition-colors border border-black"
+                        className="p-1.5 hover:bg-pink-100 rounded-full transition-colors border-2 border-pink-200"
                       >
-                        <Minus className="w-4 h-4" />
+                        <Minus className="w-4 h-4 text-pink-700" />
                       </button>
-                      <span className="w-10 text-center font-medium bg-pink-100 py-1 rounded">
+                      <span className="w-10 text-center font-medium bg-pink-100 py-1 rounded text-pink-800">
                         {item.quantity}
                       </span>
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                        className="p-1.5 hover:bg-pink-100 rounded-full transition-colors border border-black"
+                        className="p-1.5 hover:bg-pink-100 rounded-full transition-colors border-2 border-pink-200"
                         disabled={item.quantity >= item.product.stock}
                       >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-4 h-4 text-pink-700" />
                       </button>
                       <button
                         onClick={() => removeFromCart(item.product.id)}
@@ -107,7 +107,7 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
         </div>
 
         {!isLoading && cartItems.length > 0 && (
-          <div className="border-t border-black p-6 bg-white">
+          <div className="border-t-2 border-pink-200 p-6 bg-white">
             <div className="space-y-4 mb-6">
               <div className="flex items-center justify-between">
                 <span className="text-pink-600">Subtotal</span>
@@ -121,9 +121,9 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
                 <span className="text-pink-600">Tax</span>
                 <span className="font-medium">${(cartTotal * 0.08).toFixed(2)}</span>
               </div>
-              <div className="border-t border-black pt-3 mt-2">
+              <div className="border-t-2 border-pink-200 pt-3 mt-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-semibold text-black">Total</span>
+                  <span className="text-lg font-semibold text-pink-800">Total</span>
                   <span className="text-2xl font-bold text-black">
                     ${(cartTotal + 5.99 + (cartTotal * 0.08)).toFixed(2)}
                   </span>

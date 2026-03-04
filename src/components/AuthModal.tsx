@@ -48,12 +48,12 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
         >
           <div className="p-8">
             <div className="flex justify-center mb-6">
-              <div className="bg-gradient-to-r from-pink-600 to-pink-800 p-3 rounded-full">
+              <div className="bg-gradient-to-r from-pink-500 to-pink-700 p-3 rounded-full">
                 <User className="w-8 h-8 text-white" />
               </div>
             </div>
             
-            <h2 className="text-2xl font-bold text-center text-black mb-2">
+            <h2 className="text-2xl font-bold text-center text-pink-900 mb-2">
               {mode === 'login' ? 'Sign in to your account' : 'Create an account'}
             </h2>
             <p className="text-pink-600 text-center mb-6">
@@ -65,7 +65,7 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === 'register' && (
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-medium text-pink-800 mb-1">
                     Full Name
                   </label>
                   <div className="relative">
@@ -75,16 +75,16 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
                       value={formData.name}
                       onChange={handleChange}
                       required={mode === 'register'}
-                      className="w-full px-4 py-3 pl-11 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
+                      className="w-full px-4 py-3 pl-11 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                       placeholder="John Doe"
                     />
-                    <User className="w-5 h-5 text-pink-400 absolute left-3 top-3.5" />
+                    <User className="w-5 h-5 text-pink-500 absolute left-3 top-3.5" />
                   </div>
                 </div>
               )}
               
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-medium text-pink-800 mb-1">
                   Email Address
                 </label>
                 <div className="relative">
@@ -94,15 +94,15 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 pl-11 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
+                    className="w-full px-4 py-3 pl-11 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                     placeholder="you@example.com"
                   />
-                  <Mail className="w-5 h-5 text-pink-400 absolute left-3 top-3.5" />
+                  <Mail className="w-5 h-5 text-pink-500 absolute left-3 top-3.5" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-black mb-1">
+                <label className="block text-sm font-medium text-pink-800 mb-1">
                   Password
                 </label>
                 <div className="relative">
@@ -113,14 +113,14 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
                     onChange={handleChange}
                     required
                     minLength={6}
-                    className="w-full px-4 py-3 pl-11 pr-12 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
+                    className="w-full px-4 py-3 pl-11 pr-12 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                     placeholder="••••••••"
                   />
-                  <Lock className="w-5 h-5 text-pink-400 absolute left-3 top-3.5" />
+                  <Lock className="w-5 h-5 text-pink-500 absolute left-3 top-3.5" />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3.5 text-pink-400 hover:text-pink-600"
+                    className="absolute right-3 top-3.5 text-pink-500 hover:text-pink-700"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -129,7 +129,7 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
               
               {mode === 'register' && (
                 <div>
-                  <label className="block text-sm font-medium text-black mb-1">
+                  <label className="block text-sm font-medium text-pink-800 mb-1">
                     Confirm Password
                   </label>
                   <div className="relative">
@@ -139,10 +139,10 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required={mode === 'register'}
-                      className="w-full px-4 py-3 pl-11 pr-12 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
+                      className="w-full px-4 py-3 pl-11 pr-12 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                       placeholder="••••••••"
                     />
-                    <Lock className="w-5 h-5 text-pink-400 absolute left-3 top-3.5" />
+                    <Lock className="w-5 h-5 text-pink-500 absolute left-3 top-3.5" />
                   </div>
                 </div>
               )}
