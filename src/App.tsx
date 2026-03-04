@@ -73,34 +73,7 @@ function App() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-pink-600" />
-              </div>
-              <h3 className="text-xl font-bold text-black mb-2">Free Shipping</h3>
-              <p className="text-pink-600">On orders over $50</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-pink-600" />
-              </div>
-              <h3 className="text-xl font-bold text-black mb-2">Secure Payment</h3>
-              <p className="text-pink-600">100% secure payment</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <RotateCcw className="w-8 h-8 text-pink-600" />
-              </div>
-              <h3 className="text-xl font-bold text-black mb-2">Easy Returns</h3>
-              <p className="text-pink-600">30-day return policy</p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">

@@ -46,26 +46,26 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
         <div className="p-4">
           <div className="flex justify-between items-start mb-1">
             <div>
-              <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
+              <span className="text-xs font-medium text-pink-600 uppercase tracking-wide">
                 {product.category}
               </span>
-              <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1">
+              <h3 className="text-sm font-semibold text-black mb-1 line-clamp-1">
                 {product.name}
               </h3>
             </div>
-            <div className="flex items-center bg-blue-50 px-1.5 py-0.5 rounded">
+            <div className="flex items-center bg-pink-50 px-1.5 py-0.5 rounded">
               <Star className="w-3 h-3 text-yellow-400 fill-current" />
-              <span className="text-xs font-medium text-gray-700 ml-1">{rating}.0</span>
+              <span className="text-xs font-medium text-black ml-1">{rating}.0</span>
             </div>
           </div>
           
-          <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+          <p className="text-xs text-pink-600 mb-2 line-clamp-2">
             {product.description}
           </p>
 
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-base font-bold text-gray-900">
+              <span className="text-base font-bold text-black">
                 ${product.price.toFixed(2)}
               </span>
             </div>

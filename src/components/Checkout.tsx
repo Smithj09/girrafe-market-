@@ -76,29 +76,29 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
         >
           {orderComplete ? (
             <div className="p-12 text-center">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
-                <CheckCircle className="w-12 h-12 text-green-600" />
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-pink-100 rounded-full mb-6">
+                <CheckCircle className="w-12 h-12 text-pink-600" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Order Confirmed!</h2>
-              <p className="text-gray-600 text-lg mb-2">
+              <h2 className="text-3xl font-bold text-black mb-4">Order Confirmed!</h2>
+              <p className="text-black text-lg mb-2">
                 Thank you for your purchase. Your order has been placed successfully.
               </p>
-              <p className="text-gray-500">
+              <p className="text-pink-600">
                 Order ID: #{Math.floor(100000 + Math.random() * 900000)}
               </p>
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between p-6 border-b border-black">
                 <div className="flex items-center gap-2">
-                  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-2 rounded-lg">
+                  <div className="bg-gradient-to-r from-pink-600 to-pink-800 p-2 rounded-lg">
                     <CreditCard className="w-6 h-6 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900">Checkout</h2>
+                  <h2 className="text-2xl font-bold text-black">Checkout</h2>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 hover:bg-pink-100 rounded-full transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -107,29 +107,29 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
               <div className="p-6">
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center py-12">
-                    <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-4" />
-                    <p className="text-gray-600">Loading your cart details...</p>
+                    <Loader2 className="w-10 h-10 animate-spin text-pink-600 mb-4" />
+                    <p className="text-black">Loading your cart details...</p>
                   </div>
                 ) : cartItems.length === 0 ? (
                   <div className="text-center py-12">
-                    <div className="bg-gray-100 p-6 rounded-full inline-block mb-6">
-                      <Truck className="w-12 h-12 text-gray-400" />
+                    <div className="bg-pink-100 p-6 rounded-full inline-block mb-6">
+                      <Truck className="w-12 h-12 text-pink-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
-                    <p className="text-gray-600">Add some products to your cart before checking out.</p>
+                    <h3 className="text-xl font-bold text-black mb-2">Your cart is empty</h3>
+                    <p className="text-pink-600">Add some products to your cart before checking out.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div>
                       <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-blue-600" />
+                        <MapPin className="w-5 h-5 text-pink-600" />
                         Shipping Information
                       </h3>
                       
                       <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                            <label className="block text-sm font-medium text-black mb-1 flex items-center gap-1">
                               <User className="w-4 h-4" />
                               Full Name
                             </label>
@@ -139,12 +139,12 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                               value={formData.name}
                               onChange={handleChange}
                               required
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                             />
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                            <label className="block text-sm font-medium text-black mb-1 flex items-center gap-1">
                               <Mail className="w-4 h-4" />
                               Email
                             </label>
@@ -154,29 +154,29 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                               value={formData.email}
                               onChange={handleChange}
                               required
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                             />
                           </div>
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                          <label className="block text-sm font-medium text-black mb-1 flex items-center gap-1">
                             <MapPin className="w-4 h-4" />
                             Address
                           </label>
-                          <input
-                            type="text"
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                          />
+                            <input
+                              type="text"
+                              name="address"
+                              value={formData.address}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
+                            />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-black mb-1">
                               City
                             </label>
                             <input
@@ -185,11 +185,11 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                               value={formData.city}
                               onChange={handleChange}
                               required
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-black mb-1">
                               ZIP Code
                             </label>
                             <input
@@ -198,18 +198,18 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                               value={formData.zipCode}
                               onChange={handleChange}
                               required
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                             />
                           </div>
                         </div>
 
                         <h3 className="font-semibold text-lg mt-6 mb-4 flex items-center gap-2">
-                          <CreditCard className="w-5 h-5 text-blue-600" />
+                          <CreditCard className="w-5 h-5 text-pink-600" />
                           Payment Information
                         </h3>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                          <label className="block text-sm font-medium text-black mb-1 flex items-center gap-1">
                             <CreditCard className="w-4 h-4" />
                             Card Number
                           </label>
@@ -221,13 +221,13 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                             placeholder="1234 5678 9012 3456"
                             required
                             maxLength={19}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                            className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                           />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-black mb-1">
                               Expiration Date
                             </label>
                             <input
@@ -238,11 +238,11 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                               placeholder="MM/YY"
                               required
                               maxLength={5}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-black mb-1">
                               CVC
                             </label>
                             <input
@@ -253,7 +253,7 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
                               placeholder="123"
                               required
                               maxLength={3}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                              className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition"
                             />
                           </div>
                         </div>
@@ -278,44 +278,44 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
 
                     <div>
                       <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                        <Truck className="w-5 h-5 text-blue-600" />
+                        <Truck className="w-5 h-5 text-pink-600" />
                         Order Summary
                       </h3>
                       
-                      <div className="bg-gray-50 p-6 rounded-xl">
+                      <div className="bg-pink-50 p-6 rounded-xl">
                         <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
                           {cartItems.map((item) => (
-                            <div key={item.id} className="flex items-center gap-4 pb-4 border-b border-gray-200 last:border-0 last:pb-0">
+                            <div key={item.id} className="flex items-center gap-4 pb-4 border-b border-black last:border-0 last:pb-0">
                               <img 
                                 src={item.product.image_url} 
                                 alt={item.product.name} 
                                 className="w-16 h-16 object-cover rounded-lg flex-shrink-0" 
                               />
                               <div className="flex-1 min-w-0">
-                                <h4 className="font-medium text-gray-900 truncate">{item.product.name}</h4>
-                                <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                                <h4 className="font-medium text-black truncate">{item.product.name}</h4>
+                                <p className="text-sm text-pink-600">Qty: {item.quantity}</p>
                                 <p className="font-semibold">${(item.product.price * item.quantity).toFixed(2)}</p>
                               </div>
                             </div>
                           ))}
                         </div>
                         
-                        <div className="space-y-3 mt-6 pt-4 border-t border-gray-200">
+                        <div className="space-y-3 mt-6 pt-4 border-t border-black">
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Subtotal</span>
+                            <span className="text-pink-600">Subtotal</span>
                             <span>${cartTotal.toFixed(2)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Shipping</span>
+                            <span className="text-pink-600">Shipping</span>
                             <span>$5.99</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Tax</span>
+                            <span className="text-pink-600">Tax</span>
                             <span>${(cartTotal * 0.08).toFixed(2)}</span>
                           </div>
-                          <div className="flex justify-between pt-3 border-t border-gray-200 font-bold text-lg">
+                          <div className="flex justify-between pt-3 border-t border-black font-bold text-lg">
                             <span>Total</span>
-                            <span className="text-blue-600">${(cartTotal + 5.99 + (cartTotal * 0.08)).toFixed(2)}</span>
+                            <span className="text-pink-600">${(cartTotal + 5.99 + (cartTotal * 0.08)).toFixed(2)}</span>
                           </div>
                         </div>
                       </div>

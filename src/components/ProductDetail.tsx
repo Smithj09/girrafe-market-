@@ -31,11 +31,11 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
           className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900">Product Details</h2>
+          <div className="flex items-center justify-between p-4 border-b border-black">
+            <h2 className="text-xl font-bold text-black">Product Details</h2>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-1 hover:bg-pink-100 rounded-full transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -57,24 +57,24 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
               </div>
               
               <div className="flex gap-1">
-                <div className="bg-gray-200 border-2 border-dashed rounded-lg w-16 h-16" />
-                <div className="bg-gray-200 border-2 border-dashed rounded-lg w-16 h-16" />
-                <div className="bg-gray-200 border-2 border-dashed rounded-lg w-16 h-16" />
-                <div className="bg-gray-200 border-2 border-dashed rounded-lg w-16 h-16" />
+                <div className="bg-pink-100 border-2 border-dashed rounded-lg w-16 h-16" />
+                <div className="bg-pink-100 border-2 border-dashed rounded-lg w-16 h-16" />
+                <div className="bg-pink-100 border-2 border-dashed rounded-lg w-16 h-16" />
+                <div className="bg-pink-100 border-2 border-dashed rounded-lg w-16 h-16" />
               </div>
             </div>
 
             <div className="flex flex-col">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
+                <span className="text-xs font-medium text-pink-600 uppercase tracking-wide">
                   {product.category}
                 </span>
-                <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
-                  <Heart className="w-4 h-4 text-gray-700" />
+                <button className="p-1 hover:bg-pink-100 rounded-full transition-colors">
+                  <Heart className="w-4 h-4 text-black" />
                 </button>
               </div>
               
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold text-black mb-2">
                 {product.name}
               </h3>
               
@@ -84,30 +84,30 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
                     <Star key={i} className={`w-4 h-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
                   ))}
                 </div>
-                <span className="text-sm text-gray-600 font-medium">{rating}.0</span>
-                <span className="text-xs text-gray-500">({reviewCount} reviews)</span>
+                <span className="text-sm text-pink-600 font-medium">{rating}.0</span>
+                <span className="text-xs text-pink-400">({reviewCount} reviews)</span>
               </div>
               
-              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+              <p className="text-black text-sm leading-relaxed mb-4">
                 {product.description}
               </p>
 
-              <div className="flex items-center gap-2 mb-4 text-gray-700">
+              <div className="flex items-center gap-2 mb-4 text-black">
                 <Package className="w-4 h-4" />
                 <span className="text-xs">
                   {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
                 </span>
               </div>
 
-              <div className="border-t border-gray-200 pt-4 mt-auto">
+              <div className="border-t border-black pt-4 mt-auto">
                 <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-2xl font-bold text-gray-900">
+                  <span className="text-2xl font-bold text-black">
                     ${product.price.toFixed(2)}
                   </span>
-                  <span className="text-xs text-gray-500 line-through">
+                  <span className="text-xs text-pink-400 line-through">
                     ${(product.price * 1.2).toFixed(2)}
                   </span>
-                  <span className="bg-green-100 text-green-800 text-xs font-medium px-1.5 py-0.5 rounded">
+                  <span className="bg-pink-100 text-pink-800 text-xs font-medium px-1.5 py-0.5 rounded">
                     Save 20%
                   </span>
                 </div>
@@ -125,8 +125,8 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
                   <button className="btn-secondary py-2 text-sm">
                     Buy Now
                   </button>
-                  <button className="flex items-center justify-center gap-1.5 border border-gray-300 rounded-lg px-3 py-2 text-sm hover:bg-gray-50 transition-colors">
-                    <Heart className="w-4 h-4 text-gray-700" />
+                  <button className="flex items-center justify-center gap-1.5 border border-black rounded-lg px-3 py-2 text-sm hover:bg-pink-50 transition-colors">
+                    <Heart className="w-4 h-4 text-black" />
                     Wishlist
                   </button>
                 </div>
