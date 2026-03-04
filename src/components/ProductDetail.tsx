@@ -1,3 +1,4 @@
+
 import { X, ShoppingCart, Package, Star, Heart } from 'lucide-react';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
@@ -28,10 +29,10 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
         onClick={onClose}
       >
         <div
-          className="bg-white rounded-3xl shadow-xl max-w-4xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto flex flex-col"
+          className="bg-white shadow-xl max-w-4xl w-full max-h-[70vh] md:max-h-[80vh] overflow-y-auto flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-between p-4 border-b-2 border-pink-200 sticky top-0 bg-white z-10">
+          <div className="flex items-center justify-between p-3 border-b-2 border-pink-200 sticky top-0 bg-white z-10">
             <h2 className="text-xl font-bold text-pink-800">Détails du Produit</h2>
             <button
               onClick={onClose}
@@ -42,7 +43,7 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
           </div>
 
           <div className="overflow-y-auto flex-grow">
-            <div className="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6">
+            <div className="flex flex-col md:grid md:grid-cols-2 gap-3 md:gap-6 p-3 md:p-6">
               <div className="space-y-3">
                 <div className="relative">
                   <img
@@ -58,10 +59,10 @@ export function ProductDetail({ product, isOpen, onClose }: ProductDetailProps) 
                 </div>
                 
                 <div className="flex gap-1 overflow-x-auto pb-2">
-                  <div className="bg-pink-100 border-2 border-dashed rounded-2xl w-16 h-16 flex-shrink-0" />
-                  <div className="bg-pink-100 border-2 border-dashed rounded-2xl w-16 h-16 flex-shrink-0" />
-                  <div className="bg-pink-100 border-2 border-dashed rounded-2xl w-16 h-16 flex-shrink-0" />
-                  <div className="bg-pink-100 border-2 border-dashed rounded-2xl w-16 h-16 flex-shrink-0" />
+                  <div className="bg-pink-100 border-2 border-dashed w-16 h-16 flex-shrink-0" />
+                  <div className="bg-pink-100 border-2 border-dashed w-16 h-16 flex-shrink-0" />
+                  <div className="bg-pink-100 border-2 border-dashed w-16 h-16 flex-shrink-0" />
+                  <div className="bg-pink-100 border-2 border-dashed w-16 h-16 flex-shrink-0" />
                 </div>
               </div>
 
