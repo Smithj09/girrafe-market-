@@ -73,6 +73,14 @@ export function Header({ onCartClick }: HeaderProps) {
             {/* Mobile Menu - Hidden on desktop */}
             <div className={`md:hidden fixed inset-0 bg-white z-40 transition-transform duration-300 ease-in-out transform ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
               <div className="flex flex-col h-full pt-16">
+                {/* Close button inside mobile menu */}
+                <button 
+                  onClick={toggleMobileMenu}
+                  className="absolute top-4 right-4 p-2 rounded-full hover:bg-pink-100 transition-colors z-50"
+                >
+                  <X className="w-6 h-6 text-pink-700" />
+                </button>
+                
                 <div className="relative px-4 py-3 border-b border-pink-200">
                   <div className="relative">
                     <input

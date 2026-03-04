@@ -5,6 +5,7 @@ import { Cart } from './components/Cart';
 import { Checkout } from './components/Checkout';
 import { ProductDetail } from './components/ProductDetail';
 import { Footer } from './components/Footer';
+import { TypingAnimation } from './components/TypingAnimation';
 import { products } from './data/products';
 import { Product } from './types';
 
@@ -33,7 +34,12 @@ function App() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">Bienvenue sur DorMark</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
+              <TypingAnimation 
+                text="Bienvenue sur DorMark" 
+                className="inline-block"
+              />
+            </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 max-w-2xl sm:max-w-3xl mx-auto opacity-90">
               Produits de qualité, prix compétitifs
             </p>
