@@ -5,9 +5,10 @@ import { AuthModal } from './AuthModal';
 
 interface HeaderProps {
   onCartClick: () => void;
+  onDashboardClick?: () => void;
 }
 
-export function Header({ onCartClick }: HeaderProps) {
+export function Header({ onCartClick, onDashboardClick }: HeaderProps) {
   const { cartCount } = useCart();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
@@ -58,6 +59,10 @@ export function Header({ onCartClick }: HeaderProps) {
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Catégories</a>
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Offres</a>
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Contact</a>
+                <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors" onClick={(e) => {
+                  e.preventDefault();
+                  onDashboardClick?.();
+                }}>Dashboard</a>
               </nav>
               
               <div className="relative flex-grow max-w-md">

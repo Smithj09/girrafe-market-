@@ -6,22 +6,53 @@ import { Checkout } from './components/Checkout';
 import { ProductDetail } from './components/ProductDetail';
 import { Footer } from './components/Footer';
 import { TypingAnimation } from './components/TypingAnimation';
-import { products } from './data/products';
+import { SellerDashboard } from './components/SellerDashboard';
+import { AddProductForm } from './components/AddProductForm';
+import { EditProductForm } from './components/EditProductForm';
+import { products as initialProducts } from './data/products';
 import { Product } from './types';
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [isSellerDashboardOpen, setIsSellerDashboardOpen] = useState(false);
+  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [isEditProductOpen, setIsEditProductOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState<Product | null>(null);
 
   const handleCheckout = () => {
     setIsCartOpen(false);
     setIsCheckoutOpen(true);
   };
 
+  const handleAddProduct = (productData: Omit<Product, 'id' | 'rating' | 'reviewCount'>) => {
+    const newProduct: Product = {
+      ...productData,
+      id: Date.now().toString(),
+      rating: 0,
+      reviewCount: 0
+    };
+    setProducts(prev => [...prev, newProduct]);
+  };
+
+  const handleEditProduct = (updatedProduct: Product) => {
+    setProducts(prev => prev.map(product => 
+      product.id === updatedProduct.id ? updatedProduct : product
+    ));
+  };
+
+  const handleDeleteProduct = (productId: string) => {
+    setProducts(prev => prev.filter(product => product.id !== productId));
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header onCartClick={() => setIsCartOpen(true)} />
+      <Header 
+        onCartClick={() => setIsCartOpen(true)} 
+        onDashboardClick={() => setIsSellerDashboardOpen(!isSellerDashboardOpen)} 
+      />
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-pink-600 to-pink-800 text-white min-h-[70vh] sm:min-h-screen flex items-center justify-center">
@@ -90,6 +121,29 @@ function App() {
         product={selectedProduct}
         isOpen={selectedProduct !== null}
         onClose={() => setSelectedProduct(null)}
+      />
+
+      <SellerDashboard
+        products={products}
+        onAddProduct={() => setIsAddProductOpen(true)}
+        onEditProduct={(product) => {
+          setProductToEdit(product);
+          setIsEditProductOpen(true);
+        }}
+        onDeleteProduct={handleDeleteProduct}
+      />
+
+      <AddProductForm
+        isOpen={isAddProductOpen}
+        onClose={() => setIsAddProductOpen(false)}
+        onSubmit={handleAddProduct}
+      />
+
+      <EditProductForm
+        isOpen={isEditProductOpen}
+        product={productToEdit}
+        onClose={() => setIsEditProductOpen(false)}
+        onSubmit={handleEditProduct}
       />
     </div>
   );
