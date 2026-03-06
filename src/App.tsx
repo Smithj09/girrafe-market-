@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { ProductGrid } from './components/ProductGrid';
 import { Cart } from './components/Cart';
@@ -63,6 +63,7 @@ function App() {
   const handleAddProduct = async (productData: Omit<Product, 'id' | 'rating' | 'reviewCount'>) => {
     try {
       const newProduct = await (await import('./lib/db')).addProduct(productData);
+      console.log('Product added:', newProduct);
       setProducts(prev => [...prev, newProduct]);
     } catch (err) {
       console.error('Add product failed', err);
@@ -91,16 +92,18 @@ function App() {
   };
 
   // load products from DB on mount
-  useState(() => {
-    (async () => {
+  useEffect(() => {
+    const loadProducts = async () => {
       try {
         const list = await (await import('./lib/db')).fetchProducts();
+        console.log('Fetched products:', list);
         setProducts(list || []);
       } catch (err) {
         console.error('Could not load products from DB', err);
       }
-    })();
-  });
+    };
+    loadProducts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">

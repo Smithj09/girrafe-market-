@@ -16,11 +16,11 @@ create policy "Users can update own profile"
 -- Products policies
 create policy "Anyone can view products"
   on public.products for select
-  to authenticated, anon
   using (true);
 
 create policy "Admins can manage products"
   on public.products for all
+  to authenticated
   using (
     exists (
       select 1 from public.profiles

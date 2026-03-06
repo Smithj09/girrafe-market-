@@ -17,7 +17,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    authService.getCurrentUser().then(setUser).finally(() => setLoading(false));
+    const init = async () => {
+      await authService.signOut();
+      setUser(null);
+      setLoading(false);
+    };
+    init();
     
     const { data: { subscription } } = authService.onAuthStateChange(setUser);
     return () => subscription.unsubscribe();

@@ -78,10 +78,20 @@ export const authService = {
 
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
     return supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const user = await this.getCurrentUser();
-        callback(user);
-      } else {
+      if (event === 'SIGNED_IN' && session?.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, is_admin')
+          .eq('id', session.user.id)
+          .single();
+        
+        callback({
+          id: session.user.id,
+          email: session.user.email!,
+          fullName: profile?.full_name,
+          isAdmin: profile?.is_admin || false
+        });
+      } else if (event === 'SIGNED_OUT') {
         callback(null);
       }
     });

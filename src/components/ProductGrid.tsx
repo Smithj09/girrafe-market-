@@ -9,6 +9,7 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, onViewDetails }: ProductGridProps) {
+  console.log('ProductGrid received products:', products);
   const [selectedCategory, setSelectedCategory] = useState<string>('Tous');
   const [sortOption, setSortOption] = useState<string>('featured');
 
