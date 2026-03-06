@@ -3,8 +3,11 @@ import { Product } from '../types';
 
 export async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase.from('products').select('*');
-  if (error) throw error;
-  // Map DB rows to Product type
+  console.log('Supabase response:', { data, error, count: data?.length });
+  if (error) {
+    console.error('Supabase error:', error);
+    return [];
+  }
   return (data || []).map((row: any) => ({
     id: row.id,
     name: row.name,

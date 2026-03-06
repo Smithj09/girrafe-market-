@@ -9,7 +9,9 @@ import { TypingAnimation } from './components/TypingAnimation';
 import { SellerDashboard } from './components/SellerDashboard';
 import { AddProductForm } from './components/AddProductForm';
 import { EditProductForm } from './components/EditProductForm';
-import { products as initialProducts } from './data/products';
+import { OrderForm } from './components/OrderForm';
+import { useCart } from './context/CartContext';
+
 import { Product } from './types';
 import { supabase } from './lib/supabase';
 
@@ -23,7 +25,46 @@ function App() {
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [isEditProductOpen, setIsEditProductOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState<Product | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [visibleProducts, setVisibleProducts] = useState(8);
+  const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const { cartItems, cartTotal, clearCart } = useCart();
+
+  const handleSendOrder = () => {
+    setIsOrderFormOpen(true);
+  };
+
+  const handleOrderSubmit = async (customerData: { name: string; email: string; phone: string }) => {
+    try {
+      const orderItems = cartItems.map(item => ({
+        product_id: item.product.id,
+        product_name: item.product.name,
+        product_price: item.product.price,
+        quantity: item.quantity,
+        image_url: item.product.image_url,
+      }));
+
+      console.log('Sending order:', { customerData, orderItems, total: cartTotal });
+
+      const result = await (await import('./lib/orders')).createOrder({
+        customer_name: customerData.name,
+        customer_email: customerData.email,
+        customer_phone: customerData.phone,
+        items: orderItems,
+        total: cartTotal,
+      });
+
+      console.log('Order created:', result);
+      alert('Commande envoyée avec succès!');
+      clearCart();
+      setIsOrderFormOpen(false);
+      setIsCartOpen(false);
+    } catch (err: any) {
+      console.error('Order failed:', err);
+      console.error('Error details:', err.message, err.code);
+      alert(`Échec de l'envoi de la commande: ${err.message || 'Erreur inconnue'}`);
+    }
+  };
 
   const handleCheckout = () => {
     setIsCartOpen(false);
@@ -55,7 +96,8 @@ function App() {
     }
   };
 
-  const handleAdminLogout = () => {
+  const handleAdminLogout = async () => {
+    await supabase.auth.signOut();
     setIsAdminLoggedIn(false);
     setIsSellerDashboardOpen(false);
   };
@@ -65,6 +107,7 @@ function App() {
       const newProduct = await (await import('./lib/db')).addProduct(productData);
       console.log('Product added:', newProduct);
       setProducts(prev => [...prev, newProduct]);
+      alert('Product added successfully!');
     } catch (err) {
       console.error('Add product failed', err);
       alert('Failed to add product');
@@ -91,19 +134,52 @@ function App() {
     }
   };
 
-  // load products from DB on mount
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const list = await (await import('./lib/db')).fetchProducts();
-        console.log('Fetched products:', list);
-        setProducts(list || []);
-      } catch (err) {
-        console.error('Could not load products from DB', err);
+    const init = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      const id = session?.user?.id || 'anonymous';
+      setUserId(id);
+      
+      if (session?.user) {
+        const { data: profile } = await supabase.from('profiles').select('is_admin').eq('id', session.user.id).single();
+        if (profile?.is_admin) {
+          setIsAdminLoggedIn(true);
+        }
       }
+
+      const list = await (await import('./lib/db')).fetchProducts();
+      console.log('Fetched products:', list);
+      setProducts(list || []);
+
+      const saved = sessionStorage.getItem(`visibleProducts_${id}`);
+      if (saved) setVisibleProducts(parseInt(saved, 10));
     };
-    loadProducts();
+    init();
   }, []);
+
+  useEffect(() => {
+    if (userId && products.length > 0) {
+      const savedScroll = sessionStorage.getItem(`scrollPosition_${userId}`);
+      if (savedScroll) {
+        setTimeout(() => window.scrollTo(0, parseInt(savedScroll, 10)), 100);
+      }
+    }
+  }, [products, userId]);
+
+  useEffect(() => {
+    if (userId) {
+      sessionStorage.setItem(`visibleProducts_${userId}`, visibleProducts.toString());
+    }
+  }, [visibleProducts, userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+    const handleScroll = () => {
+      sessionStorage.setItem(`scrollPosition_${userId}`, window.scrollY.toString());
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [userId]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -180,6 +256,7 @@ function App() {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         onCheckout={handleCheckout}
+        onSendOrder={handleSendOrder}
       />
 
       <Checkout
@@ -216,6 +293,12 @@ function App() {
         product={productToEdit}
         onClose={() => setIsEditProductOpen(false)}
         onSubmit={handleEditProduct}
+      />
+
+      <OrderForm
+        isOpen={isOrderFormOpen}
+        onClose={() => setIsOrderFormOpen(false)}
+        onSubmit={handleOrderSubmit}
       />
     </div>
   );

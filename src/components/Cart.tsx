@@ -1,13 +1,14 @@
-import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, Loader2 } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, Loader2, Send } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 interface CartProps {
   isOpen: boolean;
   onClose: () => void;
   onCheckout: () => void;
+  onSendOrder?: () => void;
 }
 
-export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
+export function Cart({ isOpen, onClose, onCheckout, onSendOrder }: CartProps) {
   const { cartItems, removeFromCart, updateQuantity, cartTotal, cartCount, isLoading } = useCart();
 
   if (!isOpen) return null;
@@ -136,6 +137,13 @@ export function Cart({ isOpen, onClose, onCheckout }: CartProps) {
             >
               Passer à la caisse
               <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5" />
+            </button>
+            <button
+              onClick={onSendOrder}
+              className="w-full mt-3 bg-green-600 text-white font-semibold py-3 sm:py-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <Send className="w-4 sm:w-5 h-4 sm:h-5" />
+              Envoyer la commande à l'admin
             </button>
             <button
                 onClick={onClose}

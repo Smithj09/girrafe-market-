@@ -46,22 +46,31 @@ export const authService = {
   },
 
   async getCurrentUser(): Promise<AuthUser | null> {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { user } } = await supabase.auth.getUser();
     
-    if (!session?.user) return null;
+    if (!user) return null;
     
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('full_name, is_admin')
-      .eq('id', session.user.id)
-      .single();
-    
-    return {
-      id: session.user.id,
-      email: session.user.email!,
-      fullName: profile?.full_name,
-      isAdmin: profile?.is_admin || false
-    };
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, is_admin')
+        .eq('id', user.id)
+        .single();
+      
+      return {
+        id: user.id,
+        email: user.email!,
+        fullName: profile?.full_name,
+        isAdmin: profile?.is_admin || false
+      };
+    } catch (error) {
+      return {
+        id: user.id,
+        email: user.email!,
+        fullName: undefined,
+        isAdmin: false
+      };
+    }
   },
 
   async resetPassword(email: string) {
@@ -78,20 +87,29 @@ export const authService = {
 
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
     return supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('full_name, is_admin')
-          .eq('id', session.user.id)
-          .single();
-        
-        callback({
-          id: session.user.id,
-          email: session.user.email!,
-          fullName: profile?.full_name,
-          isAdmin: profile?.is_admin || false
-        });
-      } else if (event === 'SIGNED_OUT') {
+      if (session?.user) {
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('full_name, is_admin')
+            .eq('id', session.user.id)
+            .single();
+          
+          callback({
+            id: session.user.id,
+            email: session.user.email!,
+            fullName: profile?.full_name,
+            isAdmin: profile?.is_admin || false
+          });
+        } catch (error) {
+          callback({
+            id: session.user.id,
+            email: session.user.email!,
+            fullName: undefined,
+            isAdmin: false
+          });
+        }
+      } else {
         callback(null);
       }
     });

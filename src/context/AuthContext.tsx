@@ -17,23 +17,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const { data: { subscription } } = authService.onAuthStateChange((user) => {
+      setUser(user);
+    });
+
     const init = async () => {
-      await authService.signOut();
-      setUser(null);
+      try {
+        const currentUser = await authService.getCurrentUser();
+        setUser(currentUser);
+      } catch (err) {
+        console.error('Auth init error:', err);
+      }
       setLoading(false);
     };
-    init();
     
-    const { data: { subscription } } = authService.onAuthStateChange(setUser);
+    init();
     return () => subscription.unsubscribe();
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
     await authService.signUp(email, password, fullName);
+    const currentUser = await authService.getCurrentUser();
+    setUser(currentUser);
   };
 
   const signIn = async (email: string, password: string) => {
     await authService.signIn(email, password);
+    const currentUser = await authService.getCurrentUser();
+    setUser(currentUser);
   };
 
   const signOut = async () => {

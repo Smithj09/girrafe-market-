@@ -71,7 +71,7 @@ export function Checkout({ isOpen, onClose }: CheckoutProps) {
         onClick={onClose}
       >
         <div
-          className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+          className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {orderComplete ? (

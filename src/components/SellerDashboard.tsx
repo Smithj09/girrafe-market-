@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Package, Users, DollarSign, Plus, Edit, Trash2, Eye } from 'lucide-react';
 import { Product } from '../types';
+import { Order, fetchOrders, updateOrderStatus } from '../lib/orders';
 
 interface SellerDashboardProps {
   isOpen: boolean;
@@ -14,14 +15,26 @@ interface SellerDashboardProps {
 export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEditProduct, onDeleteProduct }: SellerDashboardProps) {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders' | 'analytics'>('dashboard');
   const [searchTerm, setSearchTerm] = useState('');
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    if (isOpen && activeTab === 'orders') {
+      fetchOrders()
+        .then(setOrders)
+        .catch(err => {
+          console.error('Failed to fetch orders:', err);
+          setOrders([]);
+        });
+    }
+  }, [isOpen, activeTab]);
 
   if (!isOpen) return null;
 
   const stats = {
     totalProducts: products.length,
-    totalOrders: 124,
-    totalRevenue: 2456.8,
-    pendingOrders: 5,
+    totalOrders: orders.length,
+    totalRevenue: orders.reduce((sum, o) => sum + o.total, 0),
+    pendingOrders: orders.filter(o => o.status === 'pending').length,
     lowStockCount: products.filter(p => p.stock < 10).length,
     totalInventoryValue: products.reduce((sum, p) => sum + p.price * p.stock, 0),
   };
@@ -235,44 +248,64 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
           {/* Orders */}
           {activeTab === 'orders' && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Orders</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Commandes</h2>
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {[
-                        { id: '#ORD-001', customer: 'John Doe', date: '2026-03-01', amount: 299.99, status: 'Completed' },
-                        { id: '#ORD-002', customer: 'Jane Smith', date: '2026-02-28', amount: 149.99, status: 'Shipped' },
-                        { id: '#ORD-003', customer: 'Robert Johnson', date: '2026-02-27', amount: 89.99, status: 'Processing' },
-                      ].map(order => (
-                        <tr key={order.id}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order.id}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{order.customer}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-pink-600">{order.date}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${order.amount.toFixed(2)}</td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.status === 'Completed' ? 'bg-pink-100 text-pink-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                              {order.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button className="text-pink-600 hover:text-pink-900">View</button>
-                          </td>
+                {orders.length === 0 ? (
+                  <div className="p-8 text-center">
+                    <Package className="w-12 h-12 text-pink-300 mx-auto mb-4" />
+                    <p className="text-gray-500 text-lg">Aucune commande pour le moment.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Articles</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {orders.map(order => (
+                          <tr key={order.id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order.customer_name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                              <div>{order.customer_email}</div>
+                              <div className="text-xs text-gray-500">{order.customer_phone}</div>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-700">
+                              {order.items.map((item, i) => (
+                                <div key={i} className="text-xs">{item.quantity}x {item.product_name}</div>
+                              ))}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${order.total.toFixed(2)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <select
+                                value={order.status}
+                                onChange={(e) => {
+                                  updateOrderStatus(order.id, e.target.value);
+                                  setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: e.target.value } : o));
+                                }}
+                                className="text-xs px-2 py-1 rounded-full border border-gray-300"
+                              >
+                                <option value="pending">En attente</option>
+                                <option value="processing">En cours</option>
+                                <option value="shipped">Expédiée</option>
+                                <option value="delivered">Livrée</option>
+                              </select>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {new Date(order.created_at).toLocaleDateString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           )}
