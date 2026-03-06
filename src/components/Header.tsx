@@ -15,9 +15,10 @@ interface HeaderProps {
   onOrdersClick?: () => void;
   ordersCount?: number;
   onContactClick?: () => void;
+  onOffersClick?: () => void;
 }
 
-export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false, onAdminLogin, onAdminLogout, onProfileClick, onOrdersClick, ordersCount = 0, onContactClick }: HeaderProps) {
+export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false, onAdminLogin, onAdminLogout, onProfileClick, onOrdersClick, ordersCount = 0, onContactClick, onOffersClick }: HeaderProps) {
   const { cartCount } = useCart();
   const { user, signOut } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -93,9 +94,9 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
 
             <div className="hidden md:flex items-center gap-6">
               <nav className="flex gap-6 items-center">
-                <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Accueil</a>
-                <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Catégories</a>
-                <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Offres</a>
+                <a href="#hero" className="text-white hover:text-pink-300 font-medium transition-colors">Accueil</a>
+                <a href="#products" className="text-white hover:text-pink-300 font-medium transition-colors">Catégories</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); onOffersClick?.(); }} className="text-white hover:text-pink-300 font-medium transition-colors">Offres Spéciales</a>
                 <a href="#" onClick={(e) => { e.preventDefault(); onContactClick?.(); }} className="text-white hover:text-pink-300 font-medium transition-colors">Contact</a>
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors" onClick={(e) => {
                   e.preventDefault();
@@ -144,16 +145,16 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
                   </div>
                 </div>
                 <nav className="flex-1 flex flex-col p-4 space-y-2">
-                  <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={toggleMobileMenu}>
+                  <a href="#hero" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={toggleMobileMenu}>
                     Accueil
                     <span className="text-pink-500">›</span>
                   </a>
-                  <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={toggleMobileMenu}>
+                  <a href="#products" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={toggleMobileMenu}>
                     Catégories
                     <span className="text-pink-500">›</span>
                   </a>
-                  <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={toggleMobileMenu}>
-                    Offres
+                  <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={(e) => { e.preventDefault(); onOffersClick?.(); toggleMobileMenu(); }}>
+                    Offres Spéciales
                     <span className="text-pink-500">›</span>
                   </a>
                   <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={(e) => { e.preventDefault(); onContactClick?.(); toggleMobileMenu(); }}>

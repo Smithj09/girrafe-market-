@@ -37,7 +37,7 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
           return;
         }
         await signUp(formData.email, formData.password, formData.name);
-        alert('Inscription réussie!');
+        alert('Inscription réussie! Veuillez vérifier votre boîte email pour confirmer votre compte.');
       }
       
       setFormData({ email: '', password: '', name: '', confirmPassword: '' });

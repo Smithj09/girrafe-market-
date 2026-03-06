@@ -13,6 +13,7 @@ import { OrderForm } from './components/OrderForm';
 import { Profile } from './components/Profile';
 import { Orders } from './components/Orders';
 import { Contact } from './components/Contact';
+import { SpecialOffers } from './components/SpecialOffers';
 import { useCart } from './context/CartContext';
 
 import { Product } from './types';
@@ -34,6 +35,7 @@ function App() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isOrdersOpen, setIsOrdersOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isOffersOpen, setIsOffersOpen] = useState(false);
   const [ordersCount, setOrdersCount] = useState(0);
   const { cartItems, cartTotal, clearCart } = useCart();
 
@@ -204,10 +206,11 @@ function App() {
         onOrdersClick={() => setIsOrdersOpen(true)}
         ordersCount={ordersCount}
         onContactClick={() => setIsContactOpen(true)}
+        onOffersClick={() => setIsOffersOpen(true)}
       />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-pink-600 to-pink-800 text-white min-h-[70vh] sm:min-h-screen flex items-center justify-center">
+      <section id="hero" className="relative bg-gradient-to-r from-pink-600 to-pink-800 text-white min-h-[70vh] sm:min-h-screen flex items-center justify-center">
         <div className="absolute inset-0 opacity-20">
           <img 
             src="https://images.pexels.com/photos/264925/pexels-photo-264925.jpeg?auto=compress&cs=tinysrgb&w=1920" 
@@ -238,7 +241,7 @@ function App() {
 
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
+      <main id="products" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         <div className="mb-8 sm:mb-12 text-center">
             <h2 className="section-title text-2xl sm:text-3xl">
               Produits
@@ -329,6 +332,13 @@ function App() {
       <Contact
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
+      />
+
+      <SpecialOffers
+        isOpen={isOffersOpen}
+        onClose={() => setIsOffersOpen(false)}
+        products={products}
+        onViewDetails={setSelectedProduct}
       />
     </div>
   );
