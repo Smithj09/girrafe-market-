@@ -17,12 +17,13 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isSellerDashboardOpen, setIsSellerDashboardOpen] = useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [isEditProductOpen, setIsEditProductOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState<Product | null>(null);
+  const [visibleProducts, setVisibleProducts] = useState(8);
 
   const handleCheckout = () => {
     setIsCartOpen(false);
@@ -94,9 +95,9 @@ function App() {
     (async () => {
       try {
         const list = await (await import('./lib/db')).fetchProducts();
-        if (list && list.length) setProducts(list);
+        setProducts(list || []);
       } catch (err) {
-        console.warn('Could not load products from DB, using local seed', err);
+        console.error('Could not load products from DB', err);
       }
     })();
   });
@@ -154,12 +155,21 @@ function App() {
           </div>
 
         <ProductGrid
-          products={products}
+          products={products.slice(0, visibleProducts)}
           onViewDetails={setSelectedProduct}
         />
+        
+        {visibleProducts < products.length && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => setVisibleProducts(prev => prev + 8)}
+              className="bg-pink-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-pink-700 transition-colors shadow-md"
+            >
+              Voir Plus
+            </button>
+          </div>
+        )}
       </main>
-
-
 
       <Footer />
 

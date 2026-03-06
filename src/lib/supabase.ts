@@ -7,7 +7,6 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 export const supabase: any = supabaseUrl && supabaseAnonKey 
   ? createClient(supabaseUrl, supabaseAnonKey)
   : {
-      // Fallback mock object when environment variables aren't set
       from: (_table: string) => ({
         select: (_columns?: string) => ({
           eq: (_column: string, _value: any) => ({
@@ -20,10 +19,16 @@ export const supabase: any = supabaseUrl && supabaseAnonKey
             single: async () => ({ data: null, error: null })
           })
         }),
+        insert: async (_data: any) => ({ data: null, error: null }),
         upsert: async (_data: any) => ({ error: null })
       }),
       auth: {
+        signUp: async (_credentials: any) => ({ data: { user: null, session: null }, error: null }),
+        signInWithPassword: async (_credentials: any) => ({ data: { user: null, session: null }, error: null }),
+        signOut: async () => ({ error: null }),
         getSession: async () => ({ data: { session: null }, error: null }),
+        resetPasswordForEmail: async (_email: string) => ({ error: null }),
+        updateUser: async (_attributes: any) => ({ data: { user: null }, error: null }),
         onAuthStateChange: (_callback: (event: string, session: any) => void) => ({ 
           data: { 
             subscription: { 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ShoppingCart, Store, Menu, X, User, Search, LogOut, Package } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { AuthModal } from './AuthModal';
 import { AdminLoginModal } from './AdminLoginModal';
 
@@ -14,9 +15,9 @@ interface HeaderProps {
 
 export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false, onAdminLogin, onAdminLogout }: HeaderProps) {
   const { cartCount } = useCart();
+  const { user, signOut } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // This would come from a real auth context
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [adminLoginModalOpen, setAdminLoginModalOpen] = useState(false);
@@ -29,8 +30,8 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
     setAuthMode(authMode === 'login' ? 'register' : 'login');
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
+  const handleLogout = async () => {
+    await signOut();
     setDropdownOpen(false);
   };
 
@@ -174,7 +175,7 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
                 
                 {/* Mobile User Actions */}
                 <div className="p-4 border-t border-pink-200">
-                  {isAuthenticated ? (
+                  {user ? (
                     <div className="space-y-2">
                       <button 
                         onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -237,7 +238,7 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
             </div>
 
             <div className="flex items-center gap-4">
-              {isAuthenticated ? (
+              {user ? (
                 <div className="relative">
                   <button 
                     onClick={() => setDropdownOpen(!dropdownOpen)}

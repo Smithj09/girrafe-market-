@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) {
+  const { signIn, signUp } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -24,11 +26,27 @@ export function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthModalProp
     e.preventDefault();
     setLoading(true);
     
-    // Simulate authentication process
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setLoading(false);
-    onClose();
+    try {
+      if (mode === 'login') {
+        await signIn(formData.email, formData.password);
+        alert('Connexion réussie!');
+      } else {
+        if (formData.password !== formData.confirmPassword) {
+          alert('Les mots de passe ne correspondent pas');
+          setLoading(false);
+          return;
+        }
+        await signUp(formData.email, formData.password, formData.name);
+        alert('Inscription réussie!');
+      }
+      
+      setFormData({ email: '', password: '', name: '', confirmPassword: '' });
+      onClose();
+    } catch (error: any) {
+      alert(mode === 'login' ? 'Échec de la connexion. Vérifiez vos identifiants.' : 'Échec de l\'inscription. Réessayez.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
