@@ -110,14 +110,6 @@ export function AdminLoginModal({ isOpen, onClose, onLogin }: AdminLoginModalPro
                 </div>
               </div>
 
-              <div className="pt-2">
-                <p className="text-xs text-pink-600 text-center mb-4">
-                  Demo Credentials: <br/>
-                  <span className="font-semibold">Username: admin</span><br/>
-                  <span className="font-semibold">Password: admin123</span>
-                </p>
-              </div>
-
               <button
                 type="submit"
                 disabled={loading || !username || !password}

@@ -40,7 +40,30 @@ export async function createOrder(orderData: {
     .single();
 
   if (error) throw error;
+
+  // Send notification
+  try {
+    await sendOrderNotification(data);
+  } catch (err) {
+    console.error('Notification failed:', err);
+  }
+
   return data;
+}
+
+async function sendOrderNotification(order: Order) {
+  const itemsList = order.items.map(item => 
+    `${item.product_name} x${item.quantity} - ${item.product_price * item.quantity} FCFA`
+  ).join('\n');
+
+  const message = `🛒 NOUVELLE COMMANDE #${order.id.slice(0, 8)}\n\n👤 Client: ${order.customer_name}\n📧 Email: ${order.customer_email}\n📱 Téléphone: ${order.customer_phone}\n\n📦 Articles:\n${itemsList}\n\n💰 Total: ${order.total} FCFA`;
+
+  // Send to your notification endpoint
+  await fetch('/api/notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order, message }),
+  });
 }
 
 export async function fetchOrders(): Promise<Order[]> {

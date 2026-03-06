@@ -77,3 +77,30 @@ export async function deleteProduct(id: string): Promise<void> {
   const { error } = await supabase.from('products').delete().eq('id', id);
   if (error) throw error;
 }
+
+export async function fetchUserOrders(userId: string) {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*, products(*))')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+export async function updateProfile(userId: string, fullName: string) {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ full_name: fullName })
+    .eq('id', userId);
+  if (error) throw error;
+}
+
+export async function fetchUserOrdersCount(userId: string): Promise<number> {
+  const { count, error } = await supabase
+    .from('orders')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userId);
+  if (error) return 0;
+  return count || 0;
+}

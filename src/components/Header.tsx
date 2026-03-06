@@ -11,9 +11,13 @@ interface HeaderProps {
   isAdminLoggedIn?: boolean;
   onAdminLogin?: (email: string, password: string) => Promise<boolean>;
   onAdminLogout?: () => void;
+  onProfileClick?: () => void;
+  onOrdersClick?: () => void;
+  ordersCount?: number;
+  onContactClick?: () => void;
 }
 
-export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false, onAdminLogin, onAdminLogout }: HeaderProps) {
+export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false, onAdminLogin, onAdminLogout, onProfileClick, onOrdersClick, ordersCount = 0, onContactClick }: HeaderProps) {
   const { cartCount } = useCart();
   const { user, signOut } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -31,8 +35,13 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
   };
 
   const handleLogout = async () => {
-    await signOut();
-    setDropdownOpen(false);
+    try {
+      await signOut();
+      setDropdownOpen(false);
+      window.location.reload();
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
   };
 
   const toggleMobileMenu = () => {
@@ -73,7 +82,7 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
       <header className="sticky top-0 z-50 bg-[#131921] text-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <div className="bg-gradient-to-r from-pink-500 to-pink-700 p-2 rounded-lg">
                 <Store className="w-6 h-6 text-white" />
               </div>
@@ -87,7 +96,7 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Accueil</a>
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Catégories</a>
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Offres</a>
-                <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors">Contact</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); onContactClick?.(); }} className="text-white hover:text-pink-300 font-medium transition-colors">Contact</a>
                 <a href="#" className="text-white hover:text-pink-300 font-medium transition-colors" onClick={(e) => {
                   e.preventDefault();
                   handleDashboardClick();
@@ -147,7 +156,7 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
                     Offres
                     <span className="text-pink-500">›</span>
                   </a>
-                  <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={toggleMobileMenu}>
+                  <a href="#" className="text-black hover:text-pink-700 font-medium py-3 px-4 rounded-lg hover:bg-pink-50 transition-colors flex items-center justify-between" onClick={(e) => { e.preventDefault(); onContactClick?.(); toggleMobileMenu(); }}>
                     Contact
                     <span className="text-pink-500">›</span>
                   </a>
@@ -187,20 +196,27 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
                       
                       {dropdownOpen && (
                         <div className="mt-2 w-full bg-white rounded-lg shadow-lg border-2 border-pink-200 py-2 z-50">
-                          <a 
-                            href="#" 
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
+                          <button 
+                            onClick={() => { onOrdersClick?.(); setDropdownOpen(false); toggleMobileMenu(); }}
+                            className="flex items-center justify-between w-full text-left px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
                           >
-                            <Package className="w-4 h-4" />
-                            Mes Commandes
-                          </a>
-                          <a 
-                            href="#" 
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
+                            <div className="flex items-center gap-2">
+                              <Package className="w-4 h-4" />
+                              Mes Commandes
+                            </div>
+                            {ordersCount > 0 && (
+                              <span className="bg-pink-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                {ordersCount}
+                              </span>
+                            )}
+                          </button>
+                          <button 
+                            onClick={() => { onProfileClick?.(); setDropdownOpen(false); toggleMobileMenu(); }}
+                            className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
                           >
                             <User className="w-4 h-4" />
                             Profil
-                          </a>
+                          </button>
                           <button 
                             onClick={handleLogout}
                             className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
@@ -249,20 +265,27 @@ export function Header({ onCartClick, onDashboardClick, isAdminLoggedIn = false,
                   
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border-2 border-pink-200 py-2 z-50">
-                      <a 
-                        href="#" 
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
+                      <button 
+                        onClick={() => { onOrdersClick?.(); setDropdownOpen(false); }}
+                        className="flex items-center justify-between w-full text-left px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
                       >
-                        <Package className="w-4 h-4" />
-                        Mes Commandes
-                      </a>
-                      <a 
-                        href="#" 
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
+                        <div className="flex items-center gap-2">
+                          <Package className="w-4 h-4" />
+                          Mes Commandes
+                        </div>
+                        {ordersCount > 0 && (
+                          <span className="bg-pink-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                            {ordersCount}
+                          </span>
+                        )}
+                      </button>
+                      <button 
+                        onClick={() => { onProfileClick?.(); setDropdownOpen(false); }}
+                        className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"
                       >
                         <User className="w-4 h-4" />
                         Profil
-                      </a>
+                      </button>
                       <button 
                         onClick={handleLogout}
                         className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-pink-700 hover:bg-pink-100"

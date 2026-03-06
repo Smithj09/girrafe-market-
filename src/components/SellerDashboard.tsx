@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Package, Users, DollarSign, Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Package, Users, DollarSign, Plus, Edit, Trash2, Eye, X } from 'lucide-react';
 import { Product } from '../types';
 import { Order, fetchOrders, updateOrderStatus } from '../lib/orders';
 
@@ -15,6 +15,7 @@ interface SellerDashboardProps {
 export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEditProduct, onDeleteProduct }: SellerDashboardProps) {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders' | 'analytics'>('dashboard');
   const [searchTerm, setSearchTerm] = useState('');
+  const [orderSearchTerm, setOrderSearchTerm] = useState('');
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
@@ -43,6 +44,22 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const filteredOrders = orders.filter(o =>
+    o.customer_name.toLowerCase().includes(orderSearchTerm.toLowerCase()) ||
+    o.customer_email.toLowerCase().includes(orderSearchTerm.toLowerCase()) ||
+    o.customer_phone.includes(orderSearchTerm)
+  );
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'text-red-700 bg-red-100 border-red-300';
+      case 'processing': return 'text-yellow-700 bg-yellow-100 border-yellow-300';
+      case 'shipped': return 'text-blue-700 bg-blue-100 border-blue-300';
+      case 'delivered': return 'text-green-700 bg-green-100 border-green-300';
+      default: return 'text-gray-700 bg-gray-100 border-gray-300';
+    }
+  };
 
   const handleDeleteProduct = (id: string) => {
     if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
@@ -88,9 +105,14 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
               <li>
                 <button
                   onClick={() => setActiveTab('orders')}
-                  className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium ${activeTab === 'orders' ? 'bg-pink-600 text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                  className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium flex items-center justify-between ${activeTab === 'orders' ? 'bg-pink-600 text-white' : 'text-gray-700 hover:bg-gray-100'}`}
                 >
-                  Orders
+                  <span>Orders</span>
+                  {stats.totalOrders > 0 && (
+                    <span className={`text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${activeTab === 'orders' ? 'bg-white text-pink-600' : 'bg-pink-600 text-white'}`}>
+                      {stats.totalOrders}
+                    </span>
+                  )}
                 </button>
               </li>
             </ul>
@@ -138,7 +160,9 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="px-4 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
-              <button onClick={onClose} className="text-sm text-gray-500 hover:text-gray-700">Close</button>
+              <button onClick={onClose} className="p-2 hover:bg-pink-100 rounded-lg transition-colors">
+                <X className="w-5 h-5 text-pink-600" />
+              </button>
             </div>
           </div>
 
@@ -248,12 +272,21 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
           {/* Orders */}
           {activeTab === 'orders' && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Commandes</h2>
+              <div className="bg-white rounded-xl shadow-md p-4 mb-6 flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-gray-900">Commandes</h2>
+                <input
+                  type="text"
+                  placeholder="Rechercher par nom, email ou téléphone..."
+                  value={orderSearchTerm}
+                  onChange={(e) => setOrderSearchTerm(e.target.value)}
+                  className="px-4 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                />
+              </div>
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                {orders.length === 0 ? (
+                {filteredOrders.length === 0 ? (
                   <div className="p-8 text-center">
                     <Package className="w-12 h-12 text-pink-300 mx-auto mb-4" />
-                    <p className="text-gray-500 text-lg">Aucune commande pour le moment.</p>
+                    <p className="text-gray-500 text-lg">{orderSearchTerm ? 'Aucune commande trouvée.' : 'Aucune commande pour le moment.'}</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
@@ -269,7 +302,7 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {orders.map(order => (
+                        {filteredOrders.map(order => (
                           <tr key={order.id}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{order.customer_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -289,7 +322,7 @@ export function SellerDashboard({ isOpen, onClose, products, onAddProduct, onEdi
                                   updateOrderStatus(order.id, e.target.value);
                                   setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: e.target.value } : o));
                                 }}
-                                className="text-xs px-2 py-1 rounded-full border border-gray-300"
+                                className={`text-xs px-2 py-1 rounded-full border ${getStatusColor(order.status)}`}
                               >
                                 <option value="pending">En attente</option>
                                 <option value="processing">En cours</option>

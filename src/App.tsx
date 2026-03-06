@@ -10,6 +10,9 @@ import { SellerDashboard } from './components/SellerDashboard';
 import { AddProductForm } from './components/AddProductForm';
 import { EditProductForm } from './components/EditProductForm';
 import { OrderForm } from './components/OrderForm';
+import { Profile } from './components/Profile';
+import { Orders } from './components/Orders';
+import { Contact } from './components/Contact';
 import { useCart } from './context/CartContext';
 
 import { Product } from './types';
@@ -28,6 +31,10 @@ function App() {
   const [userId, setUserId] = useState<string | null>(null);
   const [visibleProducts, setVisibleProducts] = useState(8);
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isOrdersOpen, setIsOrdersOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [ordersCount, setOrdersCount] = useState(0);
   const { cartItems, cartTotal, clearCart } = useCart();
 
   const handleSendOrder = () => {
@@ -145,6 +152,10 @@ function App() {
         if (profile?.is_admin) {
           setIsAdminLoggedIn(true);
         }
+        
+        // Fetch orders count
+        const count = await (await import('./lib/db')).fetchUserOrdersCount(session.user.id);
+        setOrdersCount(count);
       }
 
       const list = await (await import('./lib/db')).fetchProducts();
@@ -189,6 +200,10 @@ function App() {
         isAdminLoggedIn={isAdminLoggedIn}
         onAdminLogin={handleAdminLogin}
         onAdminLogout={handleAdminLogout}
+        onProfileClick={() => setIsProfileOpen(true)}
+        onOrdersClick={() => setIsOrdersOpen(true)}
+        ordersCount={ordersCount}
+        onContactClick={() => setIsContactOpen(true)}
       />
 
       {/* Hero Section */}
@@ -299,6 +314,21 @@ function App() {
         isOpen={isOrderFormOpen}
         onClose={() => setIsOrderFormOpen(false)}
         onSubmit={handleOrderSubmit}
+      />
+
+      <Profile
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
+
+      <Orders
+        isOpen={isOrdersOpen}
+        onClose={() => setIsOrdersOpen(false)}
+      />
+
+      <Contact
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
       />
     </div>
   );
