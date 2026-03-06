@@ -24,15 +24,16 @@ export function Contact({ isOpen, onClose }: ContactProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
-        <div className="flex justify-between items-center mb-6">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] flex flex-col">
+        <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white rounded-t-lg">
           <h2 className="text-2xl font-bold text-pink-900">Contactez-nous</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="overflow-y-auto p-6">
+          <div className="grid md:grid-cols-2 gap-8">
           {/* Contact Form */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Envoyez-nous un message</h3>
@@ -156,6 +157,7 @@ export function Contact({ isOpen, onClose }: ContactProps) {
                 <span className="text-sm font-medium">WeChat</span>
               </a>
             </div>
+          </div>
           </div>
         </div>
       </div>
